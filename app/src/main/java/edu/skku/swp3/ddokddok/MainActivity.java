@@ -1,13 +1,12 @@
-package edu.skku.swp3.ddok_ddok;
+package edu.skku.swp3.ddokddok;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
+
+import edu.skku.swp3.ddokddok.MapsActivity;
 
 public class MainActivity extends AppCompatActivity {
 

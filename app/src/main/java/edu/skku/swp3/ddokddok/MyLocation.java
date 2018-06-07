@@ -1,4 +1,4 @@
-package edu.skku.swp3.ddok_ddok;
+package edu.skku.swp3.ddokddok;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;

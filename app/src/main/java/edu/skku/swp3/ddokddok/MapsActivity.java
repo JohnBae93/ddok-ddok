@@ -1,4 +1,4 @@
-package edu.skku.swp3.ddok_ddok;
+package edu.skku.swp3.ddokddok;
 
 import android.Manifest;
 import android.app.ActionBar;

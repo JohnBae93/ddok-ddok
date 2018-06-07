@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "edu.skku.swp3.ddokddok"
-        minSdkVersion 19
+        minSdkVersion 26
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -29,6 +29,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-    compile 'net.openid:appauth:0.4.1'
-    compile 'cloud.artik:artikcloud-java:2.0.7'
+    implementation 'net.openid:appauth:0.4.1'
+    implementation 'cloud.artik:artikcloud-java:2.0.7'
 }
