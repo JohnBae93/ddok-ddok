@@ -9,13 +9,36 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="edu.skku.swp3.ddokddok.MainActivity">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="edu.skku.swp3.ddokddok.ARTIKCLOUD_AUTHORIZATION_RESPONSE"/>
+
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="net.openid.appauth.RedirectUriReceiverActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <!--
+                 Make sure these two intent filter fields respects "AUTH REDIRECT URL"
+                 of your application set up at the developer.artik.cloud.
+                 For example, if REDIRECT URL is "cloud.artik.example.oauth://oauth2callback",
+                 the intent-filter fields looks like the following
+                -->
+                <data android:scheme="edu.skku.swp3.ddokddok" android:host="oauth2callback"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="edu.skku.swp3.ddokddok.MainActivity">
+
+        </activity>
+    
     </application>
 
 </manifest>
