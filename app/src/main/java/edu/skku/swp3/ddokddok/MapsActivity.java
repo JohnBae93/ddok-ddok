@@ -15,8 +15,11 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
+import edu.skku.swp3.ddokddok.Config;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -27,9 +30,15 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import static edu.skku.swp3.ddokddok.Config.location_21;
+import static edu.skku.swp3.ddokddok.Config.location_27;
+import static edu.skku.swp3.ddokddok.Config.location_31;
+import static edu.skku.swp3.ddokddok.Config.location_33;
+import static edu.skku.swp3.ddokddok.Config.location_85;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private FusedLocationProviderClient mFusedLocationClient;
+    private GoogleApiClient mGoogleApiClient;
     private GoogleMap mMap;
     String gender;
 
@@ -62,19 +71,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        //realtime location
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        mFusedLocationClient.getLastLocation()
-                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
-                        if (location != null) {
-                            // Logic to handle location object
-                        }
-                    }
-                });
     }
 
 
@@ -94,7 +90,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             // TODO: Consider calling
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
         }
+
         mMap.setMyLocationEnabled(true);
+
+        LatLng Current = new LatLng(37.295669, 126.976184);
+        MarkerOptions makerOptions = new MarkerOptions();
+        makerOptions.position(Current).title("Marker in Current").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+
+        LatLng BD_21 = new LatLng(location_21[0], location_21[1]);
+        LatLng BD_27 = new LatLng(location_27[0], location_27[1]);
+        LatLng BD_31 = new LatLng(location_31[0], location_31[1]);
+        LatLng BD_33 = new LatLng(location_33[0], location_33[1]);
+        LatLng BD_85 = new LatLng(location_85[0], location_85[1]);
+
+        mMap.addMarker(new MarkerOptions().position(BD_21).title("제 1 공학관"));
+        mMap.addMarker(new MarkerOptions().position(BD_27).title("제 2 공학관"));
+        mMap.addMarker(new MarkerOptions().position(BD_31).title("제 1 자연과학관"));
+        mMap.addMarker(new MarkerOptions().position(BD_33).title("화학관"));
+        mMap.addMarker(new MarkerOptions().position(BD_85).title("산학협력센터"));
+
+        mMap.addMarker(makerOptions);
+
+
+        // mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Current,16));
 
         // Add a marker in Sydney and move the camera
         //LatLng sydney = new LatLng(-34, 151);
