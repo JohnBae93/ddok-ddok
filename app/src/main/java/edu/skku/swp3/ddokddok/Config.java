@@ -3,6 +3,11 @@ package edu.skku.swp3.ddokddok;
 public class Config {
     static final String CLIENT_ID = "8a86f222e77f40d6a22eb1f8dfc10eb8";
 
+    static final Double[] location_21 = {37.293703, 126.976147};
+    static final Double[] location_27 = {37.295192, 126.977455};
+    static final Double[] location_31 = {37.294408, 126.974620};
+    static final Double[] location_33 = {37.291600, 126.977216};
+    static final Double[] location_85 = {37.295910, 126.975753};
 
     static final String DEVICE_ID_21_F_1 = "f5ecc421b07242e8b7a815f6b4864b2d";
     static final String DEVICE_ID_21_F_2 = "f0f7733936284adda477077ac676a8f2";

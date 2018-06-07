@@ -63,6 +63,9 @@
         <activity
             android:name="edu.skku.swp3.ddokddok.MainActivity">
         </activity>
+        <activity
+            android:name="edu.skku.swp3.ddokddok.MessageActivity">
+        </activity>
 
     </application>
 

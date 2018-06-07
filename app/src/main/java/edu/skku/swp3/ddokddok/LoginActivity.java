@@ -173,7 +173,7 @@ public class LoginActivity extends Activity {
     }
 
     private void startMessageActivity() {
-        Intent msgActivityIntent = new Intent(this, MainActivity.class);
+        Intent msgActivityIntent = new Intent(this, MessageActivity.class);
         startActivity(msgActivityIntent);
     }
 
