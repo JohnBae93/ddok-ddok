@@ -1,4 +1,4 @@
-package edu.skku.swp3.ddok_ddok;
+package edu.skku.swp3.ddokddok;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
