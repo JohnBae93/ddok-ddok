@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp"
+        android:orientation="vertical"
+        tools:context="edu.skku.swp3.ddokddok.LoginActivity" >
+
+        <TextView
+            android:id="@+id/hello_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Please login to ARTIK Cloud" />
+
+        <Button
+            android:id="@+id/btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="login" />
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
