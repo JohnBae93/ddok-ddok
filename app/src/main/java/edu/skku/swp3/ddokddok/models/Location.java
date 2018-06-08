@@ -44,7 +44,7 @@ public class Location {
         this.roomList = roomList;
     }
 
-    public static ArrayList<Location> getDefaultLocationList(Context context) {
+    public static ArrayList<Location> getDefaultLocationList(Context context, String gender) {
         final Double[] location_21 = {37.293703, 126.976147};
         final Double[] location_27 = {37.295192, 126.977455};
         final Double[] location_31 = {37.294408, 126.974620};
@@ -54,15 +54,32 @@ public class Location {
 
         ArrayList<Double[]> locationValueList = new ArrayList<>(Arrays.asList(location_21, location_27, location_31, location_33, location_85));
         String[] locationNames = context.getResources().getStringArray(R.array.location_name);
-        ArrayList<String> roomList21 = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.room_list_21)));
-        ArrayList<String> roomList27 = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.room_list_27)));
-        ArrayList<String> roomList31 = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.room_list_31)));
-        ArrayList<String> roomList33 = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.room_list_33)));
-        ArrayList<String> roomList85 = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.room_list_85)));
-        ArrayList<ArrayList<String>> roomList = new ArrayList<>(Arrays.asList(roomList21,roomList27,roomList31,roomList33,roomList85));
+
+        ArrayList<String> roomList21;
+        ArrayList<String> roomList27;
+        ArrayList<String> roomList31;
+        ArrayList<String> roomList33;
+        ArrayList<String> roomList85;
+
+        if (gender.equals("male")) {
+            roomList21 = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.room_list_21_M)));
+            roomList27 = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.room_list_27_M)));
+            roomList31 = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.room_list_31_M)));
+            roomList33 = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.room_list_33_M)));
+            roomList85 = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.room_list_85_M)));
+        } else {
+            roomList21 = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.room_list_21_F)));
+            roomList27 = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.room_list_27_F)));
+            roomList31 = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.room_list_31_F)));
+            roomList33 = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.room_list_33_F)));
+            roomList85 = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.room_list_85_F)));
+        }
+
+        ArrayList<ArrayList<String>> roomList = new ArrayList<>(Arrays.asList(roomList21, roomList27, roomList31, roomList33, roomList85));
+
         for (int i = 0; i < locationNames.length; i++) {
             LatLng latLng = new LatLng(locationValueList.get(i)[0], locationValueList.get(i)[1]);
-            locationList.add(new Location(latLng, locationNames[i],roomList.get(i)));
+            locationList.add(new Location(latLng, locationNames[i], roomList.get(i)));
         }
         return locationList;
     }

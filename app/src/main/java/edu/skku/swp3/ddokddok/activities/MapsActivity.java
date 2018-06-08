@@ -6,9 +6,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -16,6 +16,21 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import cloud.artik.api.UsersApi;
 import cloud.artik.client.ApiCallback;
@@ -29,25 +44,11 @@ import cloud.artik.model.WebSocketError;
 import cloud.artik.websocket.ArtikCloudWebSocketCallback;
 import cloud.artik.websocket.ConnectionStatus;
 import cloud.artik.websocket.FirehoseWebSocket;
-import edu.skku.swp3.ddokddok.models.Location;
-import edu.skku.swp3.ddokddok.utils.AuthStateDAL;
-import edu.skku.swp3.ddokddok.models.Message;
 import edu.skku.swp3.ddokddok.R;
+import edu.skku.swp3.ddokddok.models.Location;
+import edu.skku.swp3.ddokddok.models.Message;
+import edu.skku.swp3.ddokddok.utils.AuthStateDAL;
 import okhttp3.OkHttpClient;
-
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarkerClickListener, OnMapReadyCallback {
 
@@ -60,6 +61,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
     private Button openFirehoseButton;
     private TextView fireSensorText;
     private Message responseMessage;
+    private HashMap<String, Boolean> SensorStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +100,8 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        SensorStatus = new HashMap<>();
     }
 
 
@@ -125,14 +129,22 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
         MarkerOptions makerOptions = new MarkerOptions();
         makerOptions.position(Current).title("Marker in Current").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
 
-        ArrayList<Location> locationList = Location.getDefaultLocationList(this);
+        ArrayList<Location> locationList = Location.getDefaultLocationList(this,gender);
         for (Location location : locationList){
             mMap.addMarker(new MarkerOptions().position(location.getLatLng()).title(location.getName()));
+            for (String roomID : location.getRoomList()) {
+                try {
+                    connectWebSocket(roomID);
+                } catch (Exception e) {
+                e.printStackTrace();
+            }
+            }
         }
         mMap.setOnMarkerClickListener(this);
 
         mMap.addMarker(makerOptions);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Current, 16));
+
 
         // Add a marker in Sydney and move the camera
         //LatLng sydney = new LatLng(-34, 151);
@@ -208,17 +220,29 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
 
         FirehoseWebSocket ws = new FirehoseWebSocket(client, mAccessToken, device_id, null, null, userId, new ArtikCloudWebSocketCallback() {
             @Override
-            public void onOpen(int httpStatus, String httpStatusMessage) {
-                Log.d("jh", "onOpen");
+            public void onOpen(int httpStatus, String httpStatusMessage)
+            {
+                SensorStatus.put(device_id, Boolean.FALSE);
             }
 
             @Override
             public void onMessage(MessageOut message) {
                 Map<String, Object> data = message.getData();
-                StringBuilder sb = new StringBuilder();
-                Log.d("jh", "data is :" + data.toString());
-                responseMessage.setContent(data.toString());
 
+                Log.d("yhj", " data is :" + data.toString());
+                responseMessage.setContent(data.toString());
+                Boolean status = Boolean.FALSE;
+
+                for(String key : data.keySet()) {
+                    Log.d("yhj", data.get(key).toString());
+
+                    if(data.get(key).toString().equals("true")){
+                        status = Boolean.TRUE;
+                        Log.d("@@", "@@@");
+                    }
+                }
+
+                SensorStatus.put(device_id, status);
             }
 
             @Override
@@ -238,7 +262,6 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
 
             @Override
             public void onError(WebSocketError error) {
-                Log.d("jh", "onError : " + error.getMessage());
             }
 
             @Override

@@ -10,42 +10,56 @@
         <item>"화학관"</item>
         <item>"산학협력센터"</item>
     </string-array>
-    <string-array name="room_list_21">
+    <string-array name="room_list_21_F">
         <item>"f5ecc421b07242e8b7a815f6b4864b2d"</item>
         <item>"f0f7733936284adda477077ac676a8f2"</item>
         <item>"0e3a5a06e44142b082261e59cffcaaad"</item>
+    </string-array>
+    <string-array name="room_list_21_M">
         <item>"705c70b535c94fcebfe4eaaebca19d65"</item>
         <item>"c023efb323fc4e4e851f0f64b01a28e5"</item>
         <item>"b7702e7b44ce458fb3b6beacb498c7c5"</item>
     </string-array>
-    <string-array name="room_list_27">
+
+    <string-array name="room_list_27_F">
         <item>"c150afa2573e4bacbc43db3aa229953e"</item>
         <item>"c4683a94133a4143ab2884841d46bc31"</item>
         <item>"abbb92a1c63947cda3a7cbf5b7c05d11"</item>
+    </string-array>
+    <string-array name="room_list_27_M">
         <item>"a6994a49d6c143d7a397486257b84c52"</item>
         <item>"31baf661003c40d2a7702c572c320511"</item>
         <item>"ddd34f8fbccb411d9d165533be4928ae"</item>
     </string-array>
-    <string-array name="room_list_31">
+
+    <string-array name="room_list_31_F">
         <item>"84db369ebf514baca3c2732e5c996e34"</item>
         <item>"5ff1d0cd476d46a09ea5ff200c7396a6"</item>
         <item>"66f4e721b29f4d2294992c693a1c98d3"</item>
+    </string-array>
+    <string-array name="room_list_31_M">
         <item>"0535546218b540fa9d276b94f6099f7d"</item>
         <item>"ed26d22d68024674b6e83a1a4897befa"</item>
         <item>"2d28a19448d0444f92798e07147bc020"</item>
     </string-array>
-    <string-array name="room_list_33">
+
+    <string-array name="room_list_33_F">
         <item>"4c8590db39024c08b17fb95236d998d9"</item>
         <item>"80e16ac6ab8e4b7bb39abc0872bada21"</item>
         <item>"eb3df618c10a497a8f7b81ca92fe5957"</item>
+    </string-array>
+    <string-array name="room_list_33_M">
         <item>"f407112a83f24d3f8dfb928e186f5bb7"</item>
         <item>"b2845f54c1d2495c9ce50460241559b7"</item>
         <item>"08d7c64f834c419c8891994cebde7b7a"</item>
     </string-array>
-    <string-array name="room_list_85">
+
+    <string-array name="room_list_85_F">
         <item>"b59177e5d8bd46548f0fc328de0070a0"</item>
         <item>"9c5f87055c934e519be735b24fdd44d1"</item>
         <item>"e253cd2f964e4c64ac58365e1df7a4a9"</item>
+    </string-array>
+    <string-array name="room_list_85_M">
         <item>"f54587ece7ab45b09539c8026aaa7bd0"</item>
         <item>"2f971baf76f74d6eada17fbcdc608d2d"</item>
         <item>"2d59bbd5554c499e98252895b8342c86"</item>
