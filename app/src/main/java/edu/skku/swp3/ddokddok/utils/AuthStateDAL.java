@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package edu.skku.swp3.ddokddok;
+package edu.skku.swp3.ddokddok.utils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -28,13 +28,13 @@ import net.openid.appauth.AuthState;
 import org.json.JSONException;
 
 // Tracking authorization state and storing into the persistent storage
-class AuthStateDAL {
+public class AuthStateDAL {
     private static final String AUTH_PREFERENCES_NAME = "AuthStatePreference";
     private static final String AUTH_STATE = "AUTH_STATE";
     @NonNull
     private Activity activity;
 
-    AuthStateDAL(@NonNull Activity activity) {
+    public AuthStateDAL(@NonNull Activity activity) {
         this.activity = activity;
     }
 

@@ -11,7 +11,7 @@
         android:paddingRight="16dp"
         android:paddingTop="16dp"
         android:orientation="vertical"
-        tools:context="edu.skku.swp3.ddokddok.LoginActivity" >
+        tools:context="edu.skku.swp3.ddokddok.activities.LoginActivity" >
 
         <TextView
             android:id="@+id/hello_text"

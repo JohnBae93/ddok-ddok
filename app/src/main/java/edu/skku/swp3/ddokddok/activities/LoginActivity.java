@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package edu.skku.swp3.ddokddok;
+package edu.skku.swp3.ddokddok.activities;
 
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -36,8 +36,12 @@ import net.openid.appauth.AuthorizationResponse;
 import net.openid.appauth.AuthorizationService;
 import net.openid.appauth.TokenResponse;
 
-import static edu.skku.swp3.ddokddok.AuthHelper.INTENT_ARTIKCLOUD_AUTHORIZATION_RESPONSE;
-import static edu.skku.swp3.ddokddok.AuthHelper.USED_INTENT;
+import edu.skku.swp3.ddokddok.utils.AuthHelper;
+import edu.skku.swp3.ddokddok.utils.AuthStateDAL;
+import edu.skku.swp3.ddokddok.R;
+
+import static edu.skku.swp3.ddokddok.utils.AuthHelper.INTENT_ARTIKCLOUD_AUTHORIZATION_RESPONSE;
+import static edu.skku.swp3.ddokddok.utils.AuthHelper.USED_INTENT;
 
 public class LoginActivity extends Activity {
     static final String TAG = "LoginActivity";

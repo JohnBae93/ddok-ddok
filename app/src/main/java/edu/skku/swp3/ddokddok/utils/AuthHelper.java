@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package edu.skku.swp3.ddokddok;
+package edu.skku.swp3.ddokddok.utils;
 
 import android.net.Uri;
 
@@ -22,16 +22,18 @@ import net.openid.appauth.AuthorizationRequest;
 import net.openid.appauth.AuthorizationServiceConfiguration;
 import net.openid.appauth.ResponseTypeValues;
 
-class AuthHelper {
-    private static final String ARTIKCLOUD_AUTHORIZE_URI = "https://accounts.artik.cloud/signin";
-    private static final String ARTIKCLOUD_TOKEN_URI = "https://accounts.artik.cloud/token";
+public class AuthHelper {
+    public static final String ARTIKCLOUD_AUTHORIZE_URI = "https://accounts.artik.cloud/signin";
+    public static final String ARTIKCLOUD_TOKEN_URI = "https://accounts.artik.cloud/token";
+    public static final String CLIENT_ID = "8a86f222e77f40d6a22eb1f8dfc10eb8";
+    public static final String REDIRECT_URI = "edu.skku.swp3.ddokddok://oauth2callback";
 
-    static final String INTENT_ARTIKCLOUD_AUTHORIZATION_RESPONSE
+    public static final String INTENT_ARTIKCLOUD_AUTHORIZATION_RESPONSE
             = "edu.skku.swp3.oauth.ARTIKCLOUD_AUTHORIZATION_RESPONSE";
-    static final String USED_INTENT = "USED_INTENT";
+    public static final String USED_INTENT = "USED_INTENT";
 
 
-    static AuthorizationRequest createAuthorizationRequest() {
+    public static AuthorizationRequest createAuthorizationRequest() {
 
         AuthorizationServiceConfiguration serviceConfiguration = new AuthorizationServiceConfiguration(
                 Uri.parse(ARTIKCLOUD_AUTHORIZE_URI),
@@ -41,9 +43,9 @@ class AuthHelper {
 
         AuthorizationRequest.Builder builder = new AuthorizationRequest.Builder(
                 serviceConfiguration,
-                Config.CLIENT_ID,
+                CLIENT_ID,
                 ResponseTypeValues.CODE,
-                Uri.parse(Config.REDIRECT_URI)
+                Uri.parse(REDIRECT_URI)
         );
 
         return builder.build();

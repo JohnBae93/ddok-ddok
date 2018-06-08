@@ -1,10 +1,12 @@
-package edu.skku.swp3.ddokddok;
+package edu.skku.swp3.ddokddok.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
+
+import edu.skku.swp3.ddokddok.R;
 
 public class MainActivity extends AppCompatActivity {
 
