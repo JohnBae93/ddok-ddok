@@ -353,7 +353,25 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        Toast.makeText(MapsActivity.this, marker.getTitle(), Toast.LENGTH_LONG).show();
+        //Toast.makeText(MapsActivity.this, marker.getTitle(), Toast.LENGTH_LONG).show();
+
+        //TODO: Building activity with floor tabs(or button) which will show the status of each toilet.
+
+        // Get room status
+        for (Location location : locationList) {
+            if(location.getName().equals(marker.getTitle())){
+                ArrayList<String> roomlist = location.getRoomList();
+                String output = "";
+
+                for(String roomcode : roomlist){
+                    output += roomcode;
+                    output += ":" + SensorStatus.get(roomcode) + "\n";
+                }
+                Toast.makeText(MapsActivity.this, output, Toast.LENGTH_LONG).show();
+            }
+        }
+
+
         try {
 //            connectWebSocket(ma);
         } catch (Exception e) {
