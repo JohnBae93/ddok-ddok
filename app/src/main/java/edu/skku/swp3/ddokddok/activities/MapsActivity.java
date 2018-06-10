@@ -63,6 +63,10 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
     private Message responseMessage;
     private HashMap<String, Boolean> SensorStatus;
 
+    private ArrayList<Location> locationList;
+    private ArrayList<Marker> markerList = new ArrayList<>();
+    private LatLng Current = new LatLng(37.295560, 126.976508);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,30 +129,102 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
 
         mMap.setMyLocationEnabled(true);
 
-        LatLng Current = new LatLng(37.295669, 126.976184);
         MarkerOptions makerOptions = new MarkerOptions();
-        makerOptions.position(Current).title("Marker in Current").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+        makerOptions.position(Current).title("Marker in Current").icon(BitmapDescriptorFactory.fromResource(R.drawable.current));
 
-        ArrayList<Location> locationList = Location.getDefaultLocationList(this,gender);
-        for (Location location : locationList){
-            mMap.addMarker(new MarkerOptions().position(location.getLatLng()).title(location.getName()));
+        locationList = Location.getDefaultLocationList(this, gender);
+
+        float distance = 9999999;
+        Location nearest = locationList.get(0);
+        for(Location location:locationList){
+            if(distance > getdistance(Current, location.getLatLng())){
+                distance = getdistance(Current, location.getLatLng());
+                nearest = location;
+            }
+        }
+
+        for (Location location : locationList) {
+            MarkerOptions markerOptions = new MarkerOptions();
+            if(location == nearest){
+                markerOptions.position(location.getLatLng()).title(location.getName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.toilet2));
+            }else{
+                markerOptions.position(location.getLatLng()).title(location.getName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.toilet));
+            }
+            markerList.add(mMap.addMarker(markerOptions));
             for (String roomID : location.getRoomList()) {
                 try {
                     connectWebSocket(roomID);
                 } catch (Exception e) {
-                e.printStackTrace();
-            }
+                    e.printStackTrace();
+                }
             }
         }
+
         mMap.setOnMarkerClickListener(this);
+        mMap.addMarker(makerOptions.draggable(true));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(37.293703, 126.976147), 16.5f));
 
-        mMap.addMarker(makerOptions);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Current, 16));
+        mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+            LatLng temp = null;
+            @Override
+            public void onMarkerDragStart(Marker marker) {
+                // TODO Auto-generated method stub
+                temp=marker.getPosition();
+            }
+
+            @Override
+            public void onMarkerDragEnd(Marker marker) {
+                // TODO Auto-generated method stub
+                marker.setPosition(temp);
+                Current = temp;
+
+                float distance = 9999999;
+                Location nearest = locationList.get(0);
+
+                for(Location location:locationList){
+                    if(distance > getdistance(Current, location.getLatLng())){
+                        distance = getdistance(Current, location.getLatLng());
+                        nearest = location;
+                    }
+                }
+
+                for (Marker m : markerList) {
+                    m.remove();
+                }
+
+                Toast.makeText(getApplicationContext(), nearest.getName(), Toast.LENGTH_LONG).show();
+
+                for (Location location : locationList) {
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    if(location == nearest){
+                        markerOptions.position(location.getLatLng()).title(location.getName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.toilet2));
+                    }else{
+                        markerOptions.position(location.getLatLng()).title(location.getName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.toilet));
+                    }
+                    markerList.add(mMap.addMarker(markerOptions));
+                    for (String roomID : location.getRoomList()) {
+                        try {
+                            connectWebSocket(roomID);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onMarkerDrag(Marker marker) {
+                // TODO Auto-generated method stub
+                temp = marker.getPosition();
+            }
+        });
 
 
-        // Add a marker in Sydney and move the camera
-        //LatLng sydney = new LatLng(-34, 151);
-        //mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+    }
+
+    private float getdistance(LatLng l1, LatLng l2){
+        double distance = (l1.latitude - l2.latitude)*(l1.latitude - l2.latitude) + (l1.longitude - l2.longitude)*(l1.longitude - l2.longitude);
+        return (float)distance;
     }
 
     private void setupArtikCloudApi() {
@@ -286,18 +362,5 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
         return false;
     }
 
-
-//    private void updateListenedResponseOnUIThread(final int textId) {
-//        this.runOnUiThread(new Runnable() {
-//            String ret;
-//
-//            @Override
-//            public void run() {
-//                TextView listenedText = (TextView) findViewById(textId);
-//                ret = msg;
-//                listenedText.setText("Listened Data : \n" + ret);
-//            }
-//        });
-//    }
 }
 
