@@ -4,6 +4,8 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -51,12 +53,16 @@ import edu.skku.swp3.ddokddok.models.Message;
 import edu.skku.swp3.ddokddok.models.Restroom;
 import edu.skku.swp3.ddokddok.utils.AuthStateDAL;
 import edu.skku.swp3.ddokddok.utils.BuildingHandler;
+import edu.skku.swp3.ddokddok.utils.DBHelper;
 import okhttp3.OkHttpClient;
 
 public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarkerClickListener, OnMapReadyCallback {
+    private static int FEMALE = 1;
+    private static int MALE = 2;
 
     private GoogleApiClient mGoogleApiClient;
     private GoogleMap mMap;
+    private int mGender;
     String gender;
     private UsersApi mUsersApi = null;
     private String mAccessToken;
@@ -72,15 +78,21 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
 
     private ArrayList<Building> mBuildingList;
     private BuildingHandler mBuildingHandler;
+    private DBHelper mDBHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
 
-        mBuildingHandler = new BuildingHandler();
+
+        mDBHelper = DBHelper.getInstance(this);
+        // FOR TEST
+        SQLiteDatabase wDB = mDBHelper.getWritableDatabase();
+        mBuildingHandler = new BuildingHandler(this);
 
         Intent intent = getIntent();
+        mGender = intent.getIntExtra("mgender", 2);
         gender = intent.getStringExtra("gender");
         String color;
         if (gender.equals("male")) {
@@ -146,13 +158,17 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(building.getmLatLng()).title(building.getmName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.toilet));
             markerList.add(mMap.addMarker(markerOptions));
-            for (Integer floor : building.getmRestInfo().keySet()){
-                HashMap<String, Restroom> restroomINFO = building.getmRestInfo().get(floor);
-                for(String restroomID : restroomINFO.keySet()){
-                    try {
-                        connectWebSocket(restroomID);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+
+            for(Building b : mBuildingList){
+                b.setmRestInfo(mDBHelper.getRestroomByBID(b.getmID(), mGender));
+                for(Integer floor : b.getmRestInfo().keySet()){
+                    HashMap<String, Restroom> restroomINFO = b.getmRestInfo().get(floor);
+                    for(String restroomID : restroomINFO.keySet()){
+                        try {
+                            connectWebSocket(restroomID);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }

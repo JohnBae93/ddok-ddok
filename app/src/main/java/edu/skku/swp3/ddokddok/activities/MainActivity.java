@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                intent.putExtra("mgender", 2);
                 intent.putExtra("gender", "male");
                 startActivity(intent);
             }
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                intent.putExtra("mgender", 1);
                 intent.putExtra("gender", "female");
                 startActivity(intent);
             }

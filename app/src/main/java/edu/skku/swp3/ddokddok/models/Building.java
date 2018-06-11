@@ -6,10 +6,13 @@ import java.util.HashMap;
 
 public class Building {
     private HashMap<Integer, HashMap<String, Restroom>> mRestInfo;   // <floor, <RestroomID, Location>>
+
+    private int mID;
     private String mName;       // 빌딩 이름
     private LatLng mLatLng;     // 빌딩 위치
     private int mMaxFloor;
 
+    public Building(){}
     public Building(String mName, LatLng mLatLng, int mMaxFloor) {
         this.mRestInfo = new HashMap<>();
         this.mName = mName;
@@ -49,5 +52,24 @@ public class Building {
     }
     public int getmMaxFloor() {
         return mMaxFloor;
+    }
+    public int getmID() {
+        return mID;
+    }
+
+    public void setmRestInfo(HashMap<Integer, HashMap<String, Restroom>> mRestInfo) {
+        this.mRestInfo = mRestInfo;
+    }
+    public void setmName(String mName) {
+        this.mName = mName;
+    }
+    public void setmLatLng(LatLng mLatLng) {
+        this.mLatLng = mLatLng;
+    }
+    public void setmMaxFloor(int mMaxFloor) {
+        this.mMaxFloor = mMaxFloor;
+    }
+    public void setmID(int mID) {
+        this.mID = mID;
     }
 }
