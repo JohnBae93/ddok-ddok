@@ -21,15 +21,35 @@
         <item>"b7702e7b44ce458fb3b6beacb498c7c5"</item>
     </string-array>
 
-    <string-array name="room_list_27_F">
+    <string-array name="room_list_27_1_F">
         <item>"c150afa2573e4bacbc43db3aa229953e"</item>
         <item>"c4683a94133a4143ab2884841d46bc31"</item>
         <item>"abbb92a1c63947cda3a7cbf5b7c05d11"</item>
     </string-array>
-    <string-array name="room_list_27_M">
+    <string-array name="room_list_27_1_M">
         <item>"a6994a49d6c143d7a397486257b84c52"</item>
         <item>"31baf661003c40d2a7702c572c320511"</item>
         <item>"ddd34f8fbccb411d9d165533be4928ae"</item>
+    </string-array>
+    <string-array name="room_list_27_2_F">
+        <item>"966778fbf2df48fa82cf388836931852"</item>
+        <item>"521085912fc545b59edf3326ed548411"</item>
+        <item>"e8af86a1154d4fb9b53e2d3bfa596d5a"</item>
+    </string-array>
+    <string-array name="room_list_27_2_M">
+        <item>"6a4ff5b35ddb4248ac9e815221c7b08c"</item>
+        <item>"9e622b65159c4da7beb602b92dd3582d"</item>
+        <item>"b9539d9edf994127a50a62cecfa3b457"</item>
+    </string-array>
+    <string-array name="room_list_27_3_F">
+        <item>"aa8e1ab56fa14a149d601c58f744ed6d"</item>
+        <item>"0ae2c75474a14de2b2c4a9f3f94cb3a0"</item>
+        <item>"701ea2aae3bb4447b5883e3549fc2d08"</item>
+    </string-array>
+    <string-array name="room_list_27_3_M">
+        <item>"d4051a0115524acc80ef1db1555a49ad"</item>
+        <item>"ad47f94eed03470da7eaa8d25c28752b"</item>
+        <item>"e19c3082209a48e382d832295826eaab"</item>
     </string-array>
 
     <string-array name="room_list_31_F">

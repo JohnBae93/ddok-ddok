@@ -83,7 +83,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
 
         AuthStateDAL authStateDAL = new AuthStateDAL(this);
         mAccessToken = authStateDAL.readAuthState().getAccessToken();
-        Log.v("jh", "::onCreate get access token = " + mAccessToken);
+        Log.v("yh", "::onCreate get access token = " + mAccessToken);
 
         setupArtikCloudApi();
 
@@ -244,7 +244,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
 
                 @Override
                 public void onSuccess(UserEnvelope result, int statusCode, Map<String, List<String>> map) {
-                    Log.v("jh", "getSelfAsync::setup Artik CloudApi self name = " + result.getData().getFullName());
+                    Log.v("yh", "getSelfAsync::setup Artik CloudApi self name = " + result.getData().getFullName());
                     updateWelcomeViewOnUIThread("Welcome " + result.getData().getFullName());
                     userId = result.getData().getId();
                 }
@@ -305,17 +305,10 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
             public void onMessage(MessageOut message) {
                 Map<String, Object> data = message.getData();
 
-                Log.d("yhj", " data is :" + data.toString());
-                responseMessage.setContent(data.toString());
                 Boolean status = Boolean.FALSE;
 
-                for(String key : data.keySet()) {
-                    Log.d("yhj", data.get(key).toString());
-
-                    if(data.get(key).toString().equals("true")){
-                        status = Boolean.TRUE;
-                        Log.d("@@", "@@@");
-                    }
+                if(data.get("islocked") == Boolean.TRUE) {
+                    status = Boolean.TRUE;
                 }
 
                 SensorStatus.put(device_id, status);
@@ -323,17 +316,17 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
 
             @Override
             public void onAction(ActionOut action) {
-                Log.d("jh", "onAction");
+                Log.d("yh", "onAction");
             }
 
             @Override
             public void onAck(Acknowledgement ack) {
-                Log.d("jh", "onAck");
+                Log.d("yh", "onAck");
             }
 
             @Override
             public void onClose(int code, String reason, boolean remote) {
-                Log.d("jh", "onClose");
+                Log.d("yh", "onClose");
             }
 
             @Override
@@ -342,7 +335,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
 
             @Override
             public void onPing(long timestamp) {
-                Log.d("jh", "onPing");
+                Log.d("yh", "onPing");
             }
         });
         if (ws.getConnectionStatus() == ConnectionStatus.CLOSED)
