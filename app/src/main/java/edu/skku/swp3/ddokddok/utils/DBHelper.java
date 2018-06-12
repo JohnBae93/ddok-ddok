@@ -158,8 +158,10 @@ public class DBHelper extends SQLiteOpenHelper {
                 blist.add(building);
             }
         }
-//        if(blist.size() == 0)
-//            return null;
+
+        // blist 정렬해서 리턴
+
+
         return blist;
     }
 

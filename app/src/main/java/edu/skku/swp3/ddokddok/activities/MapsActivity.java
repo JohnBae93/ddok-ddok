@@ -160,25 +160,26 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
 
         // 본인 위치로부터 근거리에 있는 빌딩 객체 가져오기 //////////////////////////////////////////////////
         mBuildingList = mBuildingHandler.getClosestBuildings(Current, 500);  // 500m 이내
-        for(Building building : mBuildingList){
+        for(Building building : mBuildingList) {
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(building.getmLatLng()).title(building.getmName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.toilet));
             markerList.add(mMap.addMarker(markerOptions));
+        }
 
-            for(Building b : mBuildingList){
-                b.setmRestInfo(mDBHelper.getRestroomByBID(b.getmID(), mGender));
-                for(Integer floor : b.getmRestInfo().keySet()){
-                    HashMap<String, Restroom> restroomINFO = b.getmRestInfo().get(floor);
-                    for(String restroomID : restroomINFO.keySet()){
-                        try {
-                            connectWebSocket(restroomID);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+        for(Building b : mBuildingList){
+            b.setmRestInfo(mDBHelper.getRestroomByBID(b.getmID(), mGender));
+            for(Integer floor : b.getmRestInfo().keySet()){
+                HashMap<String, Restroom> restroomINFO = b.getmRestInfo().get(floor);
+                for(String restroomID : restroomINFO.keySet()){
+                    try {
+                        connectWebSocket(restroomID);
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }
         }
+
         mMap.setOnMarkerClickListener(this);
         mMap.addMarker(makerOptions.draggable(true));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(37.293703, 126.976147), 16.5f));
@@ -198,13 +199,34 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
                 Current = temp;
 
                 // RESET THE MAP /////////////////////////////////////////////////////////////////
+                for(Marker each : markerList){
+                    each.remove();
+                }
+                markerList.clear();
+                markerList = new ArrayList<>();
                 mBuildingList = mBuildingHandler.getClosestBuildings(Current, 500);  // 500m 이내
+
                 for(Building building : mBuildingList){
                     MarkerOptions markerOptions = new MarkerOptions();
                     markerOptions.position(building.getmLatLng()).title(building.getmName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.toilet));
                     markerList.add(mMap.addMarker(markerOptions));
-                    for (Integer floor : building.getmRestInfo().keySet()){
-                        HashMap<String, Restroom> restroomINFO = building.getmRestInfo().get(floor);
+//
+//                    for (Integer floor : building.getmRestInfo().keySet()){
+//                        building.setmRestInfo(mDBHelper.getRestroomByBID(building.getmID(), mGender));
+//                        HashMap<String, Restroom> restroomINFO = building.getmRestInfo().get(floor);
+//                        for(String restroomID : restroomINFO.keySet()){
+//                            try {
+//                                connectWebSocket(restroomID);
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    }
+                }
+                for(Building b : mBuildingList){
+                    b.setmRestInfo(mDBHelper.getRestroomByBID(b.getmID(), mGender));
+                    for(Integer floor : b.getmRestInfo().keySet()){
+                        HashMap<String, Restroom> restroomINFO = b.getmRestInfo().get(floor);
                         for(String restroomID : restroomINFO.keySet()){
                             try {
                                 connectWebSocket(restroomID);
@@ -216,6 +238,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
                 }
                 //////////////////////////////////////////////////////////////////////////////////
             }
+
 
             @Override
             public void onMarkerDrag(Marker marker) {
