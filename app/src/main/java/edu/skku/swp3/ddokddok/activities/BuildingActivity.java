@@ -127,6 +127,8 @@ public class BuildingActivity extends AppCompatActivity {
         textView.setText(String.format("(%d / 3)", available_room_num));
         if(available_room_num==3){
             textView.setTextColor(Color.RED);
+        }else{
+            textView.setTextColor(Color.BLACK);
         }
 
     }
