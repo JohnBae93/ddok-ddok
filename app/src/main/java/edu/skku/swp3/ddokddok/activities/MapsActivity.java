@@ -28,7 +28,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,6 +46,7 @@ import cloud.artik.websocket.FirehoseWebSocket;
 import edu.skku.swp3.ddokddok.R;
 import edu.skku.swp3.ddokddok.models.Location;
 import edu.skku.swp3.ddokddok.models.Message;
+import edu.skku.swp3.ddokddok.models.SensorState;
 import edu.skku.swp3.ddokddok.utils.AuthStateDAL;
 import okhttp3.OkHttpClient;
 
@@ -61,7 +61,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
     private Button openFirehoseButton;
     private TextView fireSensorText;
     private Message responseMessage;
-    private HashMap<String, Boolean> SensorStatus;
+//    private HashMap<String, Boolean> SensorStatus;
 
     private ArrayList<Location> locationList;
     private ArrayList<Marker> markerList = new ArrayList<>();
@@ -70,7 +70,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_message);
+//        setContentView(R.layout.activity_message);
 
         Intent intent = getIntent();
         gender = intent.getStringExtra("gender");
@@ -105,7 +105,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        SensorStatus = new HashMap<>();
+//        SensorStatus = new HashMap<>();
     }
 
 
@@ -298,7 +298,8 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
             @Override
             public void onOpen(int httpStatus, String httpStatusMessage)
             {
-                SensorStatus.put(device_id, Boolean.FALSE);
+                SensorState.getInstance().setState(device_id, Boolean.FALSE);
+//                SensorStatus.put(device_id, Boolean.FALSE);
             }
 
             @Override
@@ -310,8 +311,8 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
                 if(data.get("islocked") == Boolean.TRUE) {
                     status = Boolean.TRUE;
                 }
-
-                SensorStatus.put(device_id, status);
+                SensorState.getInstance().setState(device_id, status);
+//                SensorStatus.put(device_id, status);
             }
 
             @Override
@@ -348,28 +349,28 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
     public boolean onMarkerClick(Marker marker) {
         //Toast.makeText(MapsActivity.this, marker.getTitle(), Toast.LENGTH_LONG).show();
 
-        //TODO: Building activity with floor tabs(or button) which will show the status of each toilet.
+
+        if(marker.getTitle().equals("제 2 공학관")) {
+            Intent intent = new Intent(MapsActivity.this, BuildingActivity.class);
+            intent.putExtra("gender", gender);
+            startActivity(intent);
+        }
 
         // Get room status
         for (Location location : locationList) {
-            if(location.getName().equals(marker.getTitle())){
+            if(location.getName().equals(marker.getTitle()) && !location.getName().equals("제 2 공학관")){
                 ArrayList<String> roomlist = location.getRoomList();
                 String output = "";
 
                 for(String roomcode : roomlist){
                     output += roomcode;
-                    output += ":" + SensorStatus.get(roomcode) + "\n";
+                    output += ":" + SensorState.getInstance().getState(roomcode).toString() + "\n";
+//                    output += ":" + SensorStatus.get(roomcode) + "\n";
                 }
                 Toast.makeText(MapsActivity.this, output, Toast.LENGTH_LONG).show();
             }
         }
 
-
-        try {
-//            connectWebSocket(ma);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         return false;
     }
 
