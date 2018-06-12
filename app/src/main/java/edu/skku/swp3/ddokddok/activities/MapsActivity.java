@@ -90,7 +90,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
 
         mDBHelper = DBHelper.getInstance(this);
         try {
-            mDBHelper.importIfNotExist();
+            mDBHelper.importAnyway();
         } catch (IOException e) {
             e.printStackTrace();
         }
