@@ -158,11 +158,29 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
         MarkerOptions makerOptions = new MarkerOptions();
         makerOptions.position(Current).title("Marker in Current").icon(BitmapDescriptorFactory.fromResource(R.drawable.current));
 
+
+        float distance = 9999999;
+        LatLng nearest = Current;
+
         // 본인 위치로부터 근거리에 있는 빌딩 객체 가져오기 //////////////////////////////////////////////////
         mBuildingList = mBuildingHandler.getClosestBuildings(Current, 500);  // 500m 이내
         for(Building building : mBuildingList){
+            if (distance > getdistance(Current, building.getmLatLng())){
+                distance = getdistance(Current, building.getmLatLng());
+                nearest = building.getmLatLng();
+            }
+        }
+
+        for(Building building : mBuildingList){
             MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position(building.getmLatLng()).title(building.getmName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.toilet));
+            markerOptions.position(building.getmLatLng()).title(building.getmName());
+            if(building.getmLatLng().equals(nearest)){
+                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.toilet2));
+            }
+            else{
+                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.toilet));
+            }
+
             markerList.add(mMap.addMarker(markerOptions));
 
             for(Building b : mBuildingList){
@@ -179,6 +197,8 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
                 }
             }
         }
+
+
         mMap.setOnMarkerClickListener(this);
         mMap.addMarker(makerOptions.draggable(true));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(37.293703, 126.976147), 16.5f));
