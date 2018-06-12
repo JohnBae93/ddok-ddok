@@ -3,16 +3,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/white">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="84dp"
+        tools:layout_editor_absoluteY="123dp">
+
+        <TextView
+            android:id="@+id/building_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textSize="40dp"
+            android:fontFamily="@font/nanum_square_l"
+            android:layout_marginTop="30dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:text="제 2공학관" />
+
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
             android:cropToPadding="false"
             app:srcCompat="@drawable/image_271"
             tools:layout_editor_absoluteX="27dp"
@@ -22,11 +39,14 @@
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginStart="11dp"
-            android:layout_marginTop="174dp"
-            android:layout_toEndOf="@+id/imageButton"
+            android:layout_marginStart="74dp"
+            android:layout_marginTop="157dp"
+            android:fontFamily="@font/nanum_square_b"
             android:text="TextView"
+            android:textSize="20dp"
+            android:textAlignment="center"
             tools:layout_editor_absoluteX="78dp"
             tools:layout_editor_absoluteY="666dp" />
 
@@ -34,10 +54,12 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textView1"
-            android:layout_alignBottom="@+id/textView1"
-            android:layout_alignStart="@+id/textView3"
+            android:layout_alignEnd="@+id/imageView"
+            android:layout_alignTop="@+id/textView1"
+            android:fontFamily="@font/nanum_square_b"
             android:text="TextView"
+            android:textSize="20dp"
+            android:textAlignment="center"
             tools:layout_editor_absoluteX="310dp"
             tools:layout_editor_absoluteY="128dp" />
 
@@ -45,23 +67,43 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/imageButton"
-            android:layout_alignParentEnd="true"
-            android:layout_marginBottom="22dp"
-            android:layout_marginEnd="20dp"
-            android:text="TextView" />
+            android:layout_alignEnd="@+id/imageView"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="148dp"
+            android:fontFamily="@font/nanum_square_b"
+            android:textAlignment="center"
+            android:text="TextView"
+            android:textSize="20dp" />
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/imageButton1"
             android:layout_width="46dp"
             android:layout_height="48dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
-            android:layout_marginBottom="14dp"
-            android:layout_marginStart="29dp"
-            android:background="@drawable/botton"
-            tools:layout_editor_absoluteX="34dp"
-            tools:layout_editor_absoluteY="423dp" />
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="95dp"
+            android:background="@drawable/floor_1" />
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="46dp"
+            android:layout_height="48dp"
+            android:layout_alignTop="@+id/imageButton1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/floor_2" />
+
+        <ImageButton
+            android:id="@+id/imageButton3"
+            android:layout_width="46dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignTop="@+id/imageButton1"
+            android:layout_marginBottom="20dp"
+            android:layout_marginEnd="95dp"
+            android:background="@drawable/floor_3" />
+
 
 
 

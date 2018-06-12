@@ -17,6 +17,7 @@
             android:id="@+id/hello_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/nanum_square_b"
             android:text="Please login to ARTIK Cloud" />
 
         <Button
