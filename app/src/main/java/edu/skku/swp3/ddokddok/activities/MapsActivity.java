@@ -217,96 +217,6 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
                 temp = marker.getPosition();
             }
         });
-
-        ////////////////////////////////////////////////////////////////////////////////////////////
-//        locationList = Location.getDefaultLocationList(this, gender);
-//
-//        float distance = 9999999;
-//        Location nearest = locationList.get(0);
-//        for(Location location:locationList){
-//            if(distance > getdistance(Current, location.getLatLng())){
-//                distance = getdistance(Current, location.getLatLng());
-//                nearest = location;
-//            }
-//        }
-//
-//        for (Location location : locationList) {
-//            MarkerOptions markerOptions = new MarkerOptions();
-//            if(location == nearest){
-//                markerOptions.position(location.getLatLng()).title(location.getName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.toilet2));
-//            }else{
-//                markerOptions.position(location.getLatLng()).title(location.getName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.toilet));
-//            }
-//            markerList.add(mMap.addMarker(markerOptions));
-//            for (String roomID : location.getRoomList()) {
-//                try {
-//                    connectWebSocket(roomID);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//
-//        mMap.setOnMarkerClickListener(this);
-//        mMap.addMarker(makerOptions.draggable(true));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(37.293703, 126.976147), 16.5f));
-//
-//        mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
-//            LatLng temp = null;
-//            @Override
-//            public void onMarkerDragStart(Marker marker) {
-//                // TODO Auto-generated method stub
-//                temp=marker.getPosition();
-//            }
-//
-//            @Override
-//            public void onMarkerDragEnd(Marker marker) {
-//                // TODO Auto-generated method stub
-//                marker.setPosition(temp);
-//                Current = temp;
-//
-//                float distance = 9999999;
-//                Location nearest = locationList.get(0);
-//
-//                for(Location location:locationList){
-//                    if(distance > getdistance(Current, location.getLatLng())){
-//                        distance = getdistance(Current, location.getLatLng());
-//                        nearest = location;
-//                    }
-//                }
-//
-//                for (Marker m : markerList) {
-//                    m.remove();
-//                }
-//
-//                Toast.makeText(getApplicationContext(), nearest.getName(), Toast.LENGTH_LONG).show();
-//
-//                for (Location location : locationList) {
-//                    MarkerOptions markerOptions = new MarkerOptions();
-//                    if(location == nearest){
-//                        markerOptions.position(location.getLatLng()).title(location.getName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.toilet2));
-//                    }else{
-//                        markerOptions.position(location.getLatLng()).title(location.getName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.toilet));
-//                    }
-//                    markerList.add(mMap.addMarker(markerOptions));
-//                    for (String roomID : location.getRoomList()) {
-//                        try {
-//                            connectWebSocket(roomID);
-//                        } catch (Exception e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onMarkerDrag(Marker marker) {
-//                // TODO Auto-generated method stub
-//                temp = marker.getPosition();
-//            }
-//        });
-
-
     }
 
     private float getdistance(LatLng l1, LatLng l2){
@@ -434,46 +344,12 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        //Toast.makeText(MapsActivity.this, marker.getTitle(), Toast.LENGTH_LONG).show();
-
-
-        if(marker.getTitle().equals("제 2 공학관")) {
+        if(marker.getTitle().equals("성균관대학교 제2공학관 27")) {
             Intent intent = new Intent(MapsActivity.this, BuildingActivity.class);
+            intent.putExtra("mgender", mGender);
             intent.putExtra("gender", gender);
             startActivity(intent);
         }
-
-        // Get room status todo: SensorStatus가 사라져서 지움
-//        for (Building building : mBuildingList){
-//            if(building.getmName().equals(marker.getTitle())){
-//                StringBuilder output = new StringBuilder();
-//                for(int floor : building.getmRestInfo().keySet()){
-//                    HashMap<String, Restroom> restINFO = building.getmRestInfo().get(floor);
-//                    for(String restroomID : restINFO.keySet()){
-//                        output.append("");
-//                        output.append(restroomID);
-//                        output.append(":");
-//                        output.append(SensorStatus.get(restroomID)+"\n");
-//                    }
-//
-//                }
-//                Toast.makeText(MapsActivity.this, output.toString(), Toast.LENGTH_LONG).show();
-//            }
-//        }
-
-//        for (Location location : locationList) {
-//            if(location.getName().equals(marker.getTitle())){
-//                ArrayList<String> roomlist = location.getRoomList();
-//                String output = "";
-//
-//                for(String roomcode : roomlist){
-//                    output += roomcode;
-//                    output += ":" + SensorStatus.get(roomcode) + "\n";
-//                }
-//                Toast.makeText(MapsActivity.this, output, Toast.LENGTH_LONG).show();
-//            }
-//        }
-
 
         try {
 //            connectWebSocket(ma);
