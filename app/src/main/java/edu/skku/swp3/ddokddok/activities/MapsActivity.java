@@ -159,11 +159,30 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
         MarkerOptions makerOptions = new MarkerOptions();
         makerOptions.position(Current).title("Marker in Current").icon(BitmapDescriptorFactory.fromResource(R.drawable.current));
 
+
+        float distance = 9999999;
+        LatLng nearest = Current;
+
         // 본인 위치로부터 근거리에 있는 빌딩 객체 가져오기 //////////////////////////////////////////////////
         mBuildingList = mBuildingHandler.getClosestBuildings(Current, mDIST);  // mDIST 이내
         for(Building building : mBuildingList) {
+            if (distance > getdistance(Current, building.getmLatLng())){
+                distance = getdistance(Current, building.getmLatLng());
+                nearest = building.getmLatLng();
+            }
+        }
+
+        boolean setMarker = false;
+        for(Building building : mBuildingList){
             MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position(building.getmLatLng()).title(building.getmName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.toilet));
+            markerOptions.position(building.getmLatLng()).title(building.getmName());
+
+            if (!setMarker) {
+                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.toilet2));
+                setMarker = true;
+            }else{
+                markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.toilet));
+            }
             markerList.add(mMap.addMarker(markerOptions));
         }
 
@@ -207,9 +226,17 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
                 markerList = new ArrayList<>();
                 mBuildingList = mBuildingHandler.getClosestBuildings(Current, mDIST);  // 500m 이내
 
+                boolean setMarker = false;
                 for(Building building : mBuildingList){
                     MarkerOptions markerOptions = new MarkerOptions();
                     markerOptions.position(building.getmLatLng()).title(building.getmName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.toilet));
+                    markerList.add(mMap.addMarker(markerOptions));
+                    if (!setMarker) {
+                        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.toilet2));
+                        setMarker = true;
+                    }else{
+                        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.toilet));
+                    }
                     markerList.add(mMap.addMarker(markerOptions));
 //
 //                    for (Integer floor : building.getmRestInfo().keySet()){

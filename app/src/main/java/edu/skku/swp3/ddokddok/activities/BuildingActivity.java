@@ -31,7 +31,9 @@ public class BuildingActivity extends AppCompatActivity {
     TextView mText1;
     TextView mText2;
     TextView mText3;
-    ImageButton mButton;
+    ImageButton mButton1;
+    ImageButton mButton2;
+    ImageButton mButton3;
 
 
     int current_floor;
@@ -46,7 +48,11 @@ public class BuildingActivity extends AppCompatActivity {
         mText1 = findViewById(R.id.textView1);
         mText2 = findViewById(R.id.textView2);
         mText3 = findViewById(R.id.textView3);
-        mButton = findViewById(R.id.imageButton);
+        mButton1 = findViewById(R.id.imageButton1);
+        mButton2 = findViewById(R.id.imageButton2);
+        mButton3 = findViewById(R.id.imageButton3);
+
+
         current_floor = 1;
 
         mText1.setText("(1 / 3)");
@@ -75,23 +81,31 @@ public class BuildingActivity extends AppCompatActivity {
 
         SetRestroomStateText(0,2, mText2);
 
-        mButton.setOnClickListener(new View.OnClickListener() {
+        mButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("yh", "onclick");
-                if(current_floor == 1) {
-                    mImageView.setImageResource(R.drawable.image_272);
-                    current_floor = 2;
-                    SetRestroomStateText(3,6, mText2);
-                }else if(current_floor == 2){
-                    mImageView.setImageResource(R.drawable.image_273);
-                    current_floor = 3;
-                    SetRestroomStateText(6,9, mText2);
-                }else{
-                    mImageView.setImageResource(R.drawable.image_271);
-                    current_floor = 1;
-                    SetRestroomStateText(0,3, mText2);
-                }
+                mImageView.setImageResource(R.drawable.image_271);
+                current_floor = 1;
+                SetRestroomStateText(0,3, mText2);
+            }
+        });
+
+        mButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mImageView.setImageResource(R.drawable.image_272);
+                current_floor = 2;
+                SetRestroomStateText(3,6, mText2);
+            }
+        });
+
+        mButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mImageView.setImageResource(R.drawable.image_273);
+                current_floor = 3;
+                SetRestroomStateText(6,9, mText2);
             }
         });
 
@@ -114,5 +128,6 @@ public class BuildingActivity extends AppCompatActivity {
         if(available_room_num==3){
             textView.setTextColor(Color.RED);
         }
+
     }
 }
