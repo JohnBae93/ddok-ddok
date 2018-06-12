@@ -66,7 +66,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
     private static String TAG = "MapsActivity";
     private static int FEMALE = 1;
     private static int MALE = 2;
-    private int mDIST = 800;
+    private int mDIST = 300;
     private boolean isGPSEnabled;
     private boolean isNetworkEnabled;
     private android.location.Location mLocation;
@@ -266,6 +266,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
                         markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.toilet));
                     }
                     markerList.add(mMap.addMarker(markerOptions));
+
                 }
                 for (Building b : mBuildingList) {
                     b.setmRestInfo(mDBHelper.getRestroomByBID(b.getmID(), mGender));
