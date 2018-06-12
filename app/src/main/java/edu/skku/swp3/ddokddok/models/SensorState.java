@@ -20,11 +20,10 @@ public class SensorState {
     }
 
     public Boolean getState(String key) {
-        try{
-            return this.fire.get(key);
-        }catch (Exception e){
-            return Boolean.FALSE;
-        }
+        Boolean value = this.fire.get(key);
+        if(value != null)
+            return value;
+        return Boolean.FALSE;
     }
 
     public void setState(String key, Boolean value) {
