@@ -49,6 +49,7 @@ import edu.skku.swp3.ddokddok.models.Building;
 import edu.skku.swp3.ddokddok.models.Location;
 import edu.skku.swp3.ddokddok.models.Message;
 import edu.skku.swp3.ddokddok.models.Restroom;
+import edu.skku.swp3.ddokddok.models.SensorState;
 import edu.skku.swp3.ddokddok.utils.AuthStateDAL;
 import edu.skku.swp3.ddokddok.utils.BuildingHandler;
 import okhttp3.OkHttpClient;
@@ -64,7 +65,6 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
     private Button openFirehoseButton;
     private TextView fireSensorText;
     private Message responseMessage;
-    private HashMap<String, Boolean> SensorStatus;
 
     private ArrayList<Location> locationList;
     private ArrayList<Marker> markerList = new ArrayList<>();
@@ -76,7 +76,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_message);
+//        setContentView(R.layout.activity_message);
 
         mBuildingHandler = new BuildingHandler();
 
@@ -113,7 +113,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        SensorStatus = new HashMap<>();
+//        SensorStatus = new HashMap<>();
     }
 
 
@@ -369,7 +369,8 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
             @Override
             public void onOpen(int httpStatus, String httpStatusMessage)
             {
-                SensorStatus.put(device_id, Boolean.FALSE);
+                SensorState.getInstance().setState(device_id, Boolean.FALSE);
+//                SensorStatus.put(device_id, Boolean.FALSE);
             }
 
             @Override
@@ -381,8 +382,8 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
                 if(data.get("islocked") == Boolean.TRUE) {
                     status = Boolean.TRUE;
                 }
-
-                SensorStatus.put(device_id, status);
+                SensorState.getInstance().setState(device_id, status);
+//                SensorStatus.put(device_id, status);
             }
 
             @Override
@@ -419,24 +420,30 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
     public boolean onMarkerClick(Marker marker) {
         //Toast.makeText(MapsActivity.this, marker.getTitle(), Toast.LENGTH_LONG).show();
 
-        //TODO: Building activity with floor tabs(or button) which will show the status of each toilet.
 
-        // Get room status
-        for (Building building : mBuildingList){
-            if(building.getmName().equals(marker.getTitle())){
-                StringBuilder output = new StringBuilder();
-                for(int floor : building.getmRestInfo().keySet()){
-                    HashMap<String, Restroom> restINFO = building.getmRestInfo().get(floor);
-                    for(String restroomID : restINFO.keySet()){
-                        output.append("");
-                        output.append(restroomID);
-                        output.append(":");
-                        output.append(SensorStatus.get(restroomID)+"\n");
-                    }
-                }
-                Toast.makeText(MapsActivity.this, output.toString(), Toast.LENGTH_LONG).show();
-            }
+        if(marker.getTitle().equals("제 2 공학관")) {
+            Intent intent = new Intent(MapsActivity.this, BuildingActivity.class);
+            intent.putExtra("gender", gender);
+            startActivity(intent);
         }
+
+        // Get room status todo: SensorStatus가 사라져서 지움
+//        for (Building building : mBuildingList){
+//            if(building.getmName().equals(marker.getTitle())){
+//                StringBuilder output = new StringBuilder();
+//                for(int floor : building.getmRestInfo().keySet()){
+//                    HashMap<String, Restroom> restINFO = building.getmRestInfo().get(floor);
+//                    for(String restroomID : restINFO.keySet()){
+//                        output.append("");
+//                        output.append(restroomID);
+//                        output.append(":");
+//                        output.append(SensorStatus.get(restroomID)+"\n");
+//                    }
+//
+//                }
+//                Toast.makeText(MapsActivity.this, output.toString(), Toast.LENGTH_LONG).show();
+//            }
+//        }
 
 //        for (Location location : locationList) {
 //            if(location.getName().equals(marker.getTitle())){

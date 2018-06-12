@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:cropToPadding="false"
+            app:srcCompat="@drawable/image_271"
+            tools:layout_editor_absoluteX="27dp"
+            tools:layout_editor_absoluteY="23dp" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="11dp"
+            android:layout_marginTop="174dp"
+            android:layout_toEndOf="@+id/imageButton"
+            android:text="TextView"
+            tools:layout_editor_absoluteX="78dp"
+            tools:layout_editor_absoluteY="666dp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textView1"
+            android:layout_alignBottom="@+id/textView1"
+            android:layout_alignStart="@+id/textView3"
+            android:text="TextView"
+            tools:layout_editor_absoluteX="310dp"
+            tools:layout_editor_absoluteY="128dp" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/imageButton"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="22dp"
+            android:layout_marginEnd="20dp"
+            android:text="TextView" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="46dp"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="14dp"
+            android:layout_marginStart="29dp"
+            android:background="@drawable/botton"
+            tools:layout_editor_absoluteX="34dp"
+            tools:layout_editor_absoluteY="423dp" />
+
+
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>
