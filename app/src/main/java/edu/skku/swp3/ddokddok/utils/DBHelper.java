@@ -3,6 +3,7 @@ package edu.skku.swp3.ddokddok.utils;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Location;
 import android.util.Log;
@@ -10,6 +11,10 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -21,54 +26,105 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private Context context;
     private static DBHelper sInstance;
+    private String mDBName;
+    private String mDBPath;
 
     public DBHelper(Context context){
-        super(context, "ddok-ddok", null, 1);
+        super(context, "ddok-ddok.db", null, 1);
         this.context = context;
+        this.mDBName = "ddok-ddok.db";
+        mDBPath = "/data/data/"+context.getPackageName()+"/databases/";
+    }
+
+    private boolean checkExist(){
+        SQLiteDatabase dbExists = null;
+        try{
+            String myPath = mDBPath+mDBName;
+            dbExists = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+        }catch (SQLiteException e){
+            e.printStackTrace();
+        }catch (Exception ep){
+            ep.printStackTrace();
+        }
+        if(dbExists!=null){
+            dbExists.close();
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    private void copyDatabase() throws IOException{
+        InputStream is = context.getAssets().open(mDBName);
+        OutputStream os = new FileOutputStream(mDBPath+mDBName);
+
+        byte[] buffer = new byte[4096];
+        int length;
+        while((length = is.read(buffer)) > 0){
+            os.write(buffer, 0, length);
+        }
+        os.flush();
+        os.close();
+        is.close();
+        this.close();
+    }
+
+    public void importAnyway() throws IOException{
+        this.getReadableDatabase();
+
+        try{
+            copyDatabase();
+        }catch (IOException e){
+            e.printStackTrace();
+//            throw new Error("Error coping database");
+        }
+    }
+
+    public void importIfNotExist() throws IOException{
+        boolean dbExists = checkExist();
+
+        if(dbExists){
+            // do nothing
+        }else{
+            this.getReadableDatabase();
+
+            try{
+                copyDatabase();
+            }catch (IOException e){
+                throw new Error("Error coping database");
+            }
+        }
     }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("PRAGMA foreign_keys = ON;");
-
-        StringBuffer buildSTB = new StringBuffer();
-        buildSTB.append(" CREATE TABLE BUILDING (");
-        buildSTB.append(" ID INTEGER PRIMARY KEY AUTOINCREMENT,");
-        buildSTB.append(" NAME TEXT NOT NULL,");
-        buildSTB.append(" MAXFLOOR INTEGER NOT NULL,");
-        buildSTB.append(" LATITUDE REAL NOT NULL,");
-        buildSTB.append(" LONGITUDE REAL NOT NULL);");
-        sqLiteDatabase.execSQL(buildSTB.toString());
-        Log.d(TAG, "CREATED: BUILDING TABLE");
-//        Toast.makeText(context, "BUILDING TABLE 생성완료", Toast.LENGTH_SHORT).show();
-
-        StringBuffer restSTB = new StringBuffer();
-        restSTB.append(" CREATE TABLE RESTROOM (");
-        restSTB.append(" ID TEXT PRIMARY KEY,");
-        restSTB.append(" BID INTEGER,");
-        restSTB.append(" GENDER INTEGER NOT NULL,");
-        restSTB.append(" FLOOR INTEGER NOT NULL,");
-        restSTB.append(" TOTAL INTEGER NOT NULL,");
-        restSTB.append(" EMPTY INTEGER,");
-        restSTB.append(" USED INTEGER,");
-        restSTB.append(" LATITUDE REAL NOT NULL,");
-        restSTB.append(" LONGITUDE REAL NOT NULL,");
-        restSTB.append(" FOREIGN KEY(BID) references BUILDING(ID) ON DELETE CASCADE);");
-        sqLiteDatabase.execSQL(restSTB.toString());
-        Log.d(TAG, "CREATED: RESTROOM TABLE");
-//        Toast.makeText(context, "RESTROOM TABLE 생성완료", Toast.LENGTH_SHORT).show();
-
-
-
-//        StringBuffer ownSTB = new StringBuffer();
-//        ownSTB.append(" CREATE TABLE OWNERSHIP (");
-//        ownSTB.append(" ID INTEGER PRIMARY KEY AUTOINCREMENT,");
-//        ownSTB.append(" BID TEXT,");
-//        ownSTB.append(" RID TEXT,");
-//        ownSTB.append(" FOREIGN KEY(BID) references BUILDING(NAME) ON DELETE CASCADE,");
-//        ownSTB.append(" FOREIGN KEY(RID) references RESTROOM(ID) ON DELETE CASCADE);");
-//        sqLiteDatabase.execSQL(ownSTB.toString());
-//        Toast.makeText(context, "OWNERSHIP TABLE 생성완료", Toast.LENGTH_SHORT).show();
+//        sqLiteDatabase.execSQL("PRAGMA foreign_keys = ON;");
+//
+//        StringBuffer buildSTB = new StringBuffer();
+//        buildSTB.append(" CREATE TABLE BUILDING (");
+//        buildSTB.append(" ID INTEGER PRIMARY KEY AUTOINCREMENT,");
+//        buildSTB.append(" NAME TEXT NOT NULL,");
+//        buildSTB.append(" MAXFLOOR INTEGER NOT NULL,");
+//        buildSTB.append(" LATITUDE REAL NOT NULL,");
+//        buildSTB.append(" LONGITUDE REAL NOT NULL);");
+//        sqLiteDatabase.execSQL(buildSTB.toString());
+//        Log.d(TAG, "CREATED: BUILDING TABLE");
+////        Toast.makeText(context, "BUILDING TABLE 생성완료", Toast.LENGTH_SHORT).show();
+//
+//        StringBuffer restSTB = new StringBuffer();
+//        restSTB.append(" CREATE TABLE RESTROOM (");
+//        restSTB.append(" ID TEXT PRIMARY KEY,");
+//        restSTB.append(" BID INTEGER,");
+//        restSTB.append(" GENDER INTEGER NOT NULL,");
+//        restSTB.append(" FLOOR INTEGER NOT NULL,");
+//        restSTB.append(" TOTAL INTEGER NOT NULL,");
+//        restSTB.append(" EMPTY INTEGER,");
+//        restSTB.append(" USED INTEGER,");
+//        restSTB.append(" LATITUDE REAL NOT NULL,");
+//        restSTB.append(" LONGITUDE REAL NOT NULL,");
+//        restSTB.append(" FOREIGN KEY(BID) references BUILDING(ID) ON DELETE CASCADE);");
+//        sqLiteDatabase.execSQL(restSTB.toString());
+//        Log.d(TAG, "CREATED: RESTROOM TABLE");
     }
 
     public static synchronized DBHelper getInstance(Context context){

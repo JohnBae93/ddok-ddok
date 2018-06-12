@@ -29,6 +29,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -87,6 +88,11 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
 
 
         mDBHelper = DBHelper.getInstance(this);
+        try {
+            mDBHelper.importIfNotExist();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         // FOR TEST
         SQLiteDatabase wDB = mDBHelper.getWritableDatabase();
         mBuildingHandler = new BuildingHandler(this);
