@@ -61,6 +61,7 @@ import okhttp3.OkHttpClient;
 public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarkerClickListener, OnMapReadyCallback {
     private static int FEMALE = 1;
     private static int MALE = 2;
+    private int mDIST = 300;
 
     private GoogleApiClient mGoogleApiClient;
     private GoogleMap mMap;
@@ -159,7 +160,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
         makerOptions.position(Current).title("Marker in Current").icon(BitmapDescriptorFactory.fromResource(R.drawable.current));
 
         // 본인 위치로부터 근거리에 있는 빌딩 객체 가져오기 //////////////////////////////////////////////////
-        mBuildingList = mBuildingHandler.getClosestBuildings(Current, 500);  // 500m 이내
+        mBuildingList = mBuildingHandler.getClosestBuildings(Current, mDIST);  // mDIST 이내
         for(Building building : mBuildingList) {
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(building.getmLatLng()).title(building.getmName()).icon(BitmapDescriptorFactory.fromResource(R.drawable.toilet));
@@ -204,7 +205,7 @@ public class MapsActivity extends FragmentActivity implements GoogleMap.OnMarker
                 }
                 markerList.clear();
                 markerList = new ArrayList<>();
-                mBuildingList = mBuildingHandler.getClosestBuildings(Current, 500);  // 500m 이내
+                mBuildingList = mBuildingHandler.getClosestBuildings(Current, mDIST);  // 500m 이내
 
                 for(Building building : mBuildingList){
                     MarkerOptions markerOptions = new MarkerOptions();

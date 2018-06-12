@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 import edu.skku.swp3.ddokddok.models.Building;
@@ -28,6 +30,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static DBHelper sInstance;
     private String mDBName;
     private String mDBPath;
+    private LatLng mCurrent;
 
     public DBHelper(Context context){
         super(context, "ddok-ddok.db", null, 1);
@@ -139,16 +142,37 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
+    class ascendingBuilding implements Comparator<Building> {
+        @Override
+        public int compare(Building b1, Building  b2){
+            float d1 = getDist(mCurrent.latitude, mCurrent.longitude, b1.getmLatLng().latitude, b1.getmLatLng().longitude);
+            float d2 = getDist(mCurrent.latitude, mCurrent.longitude, b2.getmLatLng().latitude, b2.getmLatLng().longitude);
+            if(d1 > d2){
+                return 1;
+            }else if(d1<d2){
+                return -1;
+            }else{
+                return 0;
+            }
+        }
+    }
+
+    private float getDist(double lat1, double long1, double lat2, double long2){
+        float[] f = new float[3];
+        Location.distanceBetween(lat1, long1, lat2, long2, f);
+        return f[0];
+    }
+
     public ArrayList<Building> getCloseBuildings(LatLng current, int dist){
+        mCurrent = current;
         ArrayList<Building> blist = new ArrayList<>();
         String q = "SELECT * FROM BUILDING";
         SQLiteDatabase wDB = getReadableDatabase();
         Cursor cursor = wDB.rawQuery(q, null);
 
         while(cursor.moveToNext()){
-            float[] f = new float[3];
-            Location.distanceBetween(current.latitude, current.longitude, cursor.getDouble(3), cursor.getDouble(4), f);
-            if(f[0] < dist){
+            float gap_dist = getDist(current.latitude, current.longitude, cursor.getDouble(3), cursor.getDouble(4));
+            if(gap_dist < dist){
                 Building building = new Building();
                 building.setmID(cursor.getInt(0));
                 building.setmName(cursor.getString(1));
@@ -157,11 +181,25 @@ public class DBHelper extends SQLiteOpenHelper {
                 building.setmLatLng(ll);
                 blist.add(building);
             }
+//            float[] f = new float[3];
+//            Location.distanceBetween(current.latitude, current.longitude, cursor.getDouble(3), cursor.getDouble(4), f);
+//            if(f[0] < dist){
+//                Building building = new Building();
+//                building.setmID(cursor.getInt(0));
+//                building.setmName(cursor.getString(1));
+//                building.setmMaxFloor(cursor.getInt(2));
+//                LatLng ll = new LatLng(cursor.getDouble(3), cursor.getDouble(4));
+//                building.setmLatLng(ll);
+//                blist.add(building);
+//            }
         }
 
         // blist 정렬해서 리턴
-
-
+        Collections.sort(blist, new ascendingBuilding());
+        int limit = 3;
+        if(blist.size() > limit) {
+            blist.subList(limit, blist.size()).clear();
+        }
         return blist;
     }
 

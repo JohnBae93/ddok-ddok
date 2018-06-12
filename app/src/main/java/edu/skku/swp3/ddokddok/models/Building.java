@@ -2,6 +2,7 @@ package edu.skku.swp3.ddokddok.models;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.Comparator;
 import java.util.HashMap;
 
 public class Building {
